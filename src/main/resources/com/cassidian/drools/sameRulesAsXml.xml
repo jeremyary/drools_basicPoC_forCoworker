@@ -1,0 +1,88 @@
+<package xmlns="http://drools.org/drools-5.2" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" name="com.cassidian.drools" xs:schemaLocation="http://drools.org/drools-5.2 drools.org/drools-5.2.xsd">
+    <import name="com.cassidian.drools.model.Message" />
+    <import name="com.cassidian.drools.model.Action" />
+    <rule name="Voice, ALI, Data present">
+        <rule-attribute name="dialect" value="mvel" />
+        <lhs>
+            <pattern identifier="$message" object-type="Message">
+                <expr>
+                    data.type == "voice"
+                </expr>
+                <expr>
+                    data.withALI
+                </expr>
+                <expr>
+                    data.withData
+                </expr>
+            </pattern>
+        </lhs>
+        <rhs>
+            Action action = new Action($message);
+            action.tell("CIS");
+            retract($message)
+        </rhs>
+    </rule>
+    <rule name="Voice, ALI, no Data present">
+        <rule-attribute name="dialect" value="mvel" />
+        <lhs>
+            <pattern identifier="$message" object-type="Message">
+                <expr>
+                    data.type == "voice"
+                </expr>
+                <expr>
+                    data.withALI
+                </expr>
+                <expr>
+                    !data.withData
+                </expr>
+            </pattern>
+        </lhs>
+        <rhs>
+            Action action = new Action($message);
+            action.tell(new String[]{"Me", "You", "Rowdy"});
+            retract($message)
+        </rhs>
+    </rule>
+    <rule name="Voice, no ALI, withData">
+        <rule-attribute name="dialect" value="mvel" />
+        <lhs>
+            <pattern identifier="$message" object-type="Message">
+                <expr>
+                    data.type == "voice"
+                </expr>
+                <expr>
+                    !data.withALI
+                </expr>
+                <expr>
+                    data.withData
+                </expr>
+            </pattern>
+        </lhs>
+        <rhs>
+            Action action = new Action($message);
+            action.tell("CAD");
+            retract($message)
+        </rhs>
+    </rule>
+    <rule name="Voice, no ALI, no data">
+        <rule-attribute name="dialect" value="mvel" />
+        <lhs>
+            <pattern identifier="$message" object-type="Message">
+                <expr>
+                    data.type == "voice"
+                </expr>
+                <expr>
+                    !data.withALI
+                </expr>
+                <expr>
+                    !data.withData
+                </expr>
+            </pattern>
+        </lhs>
+        <rhs>
+            Action action = new Action($message);
+            action.tell("Reporter");
+            retract($message)
+        </rhs>
+    </rule>
+</package>

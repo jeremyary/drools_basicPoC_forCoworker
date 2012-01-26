@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<decisions xmlns="http://cassidian.com"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="file:///home/willytan/workspace/decision_tree.xsd">
+
+    <decision factor="voice">
+        <decision factor="withALI">
+            <decision factor="withData">
+                <actions>
+                    <tell to="CIS"/>
+                </actions>
+            </decision>
+            <decision factor="withoutData">
+                <actions>
+                    <tell to="Me"/>
+                    <tell to="You"/>
+                    <tell to="Rowdy"/>
+                </actions>
+            </decision>
+        </decision>
+        <decision factor="withoutALI">
+            <decision factor="getData">
+                <actions>
+                    <tell to="CAD"/>
+                </actions>
+            </decision>
+            <decision factor="failed">
+                <actions>
+                    <tell to="Reporter"/>
+                </actions>
+            </decision>
+        </decision>
+    </decision>
+    <decision factor="sms">
+        <decision factor="whatever">
+            <actions>
+                <tell to="david" />
+                <tell to="willy" />
+            </actions>
+        </decision>
+    </decision>
+</decisions>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="XMLSchema1"
+           targetNamespace="http://cassidian.com"
+           elementFormDefault="qualified"
+           xmlns="http://cassidian.com"
+           xmlns:mstns="http://tempuri.org/XMLSchema1.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        >
+    <xs:element name="decisions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="decision" type="decisionType"  minOccurs="0" maxOccurs="2"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="decisionType">
+        <xs:choice>
+            <xs:element name="decision" type="decisionType" minOccurs="0" maxOccurs="2"/>
+            <xs:element name="actions" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="tell" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="to" use="required">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:pattern value="[a-zA-Z0-9]+" />
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="factor" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="^[a-z][a-zA-Z]+$" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

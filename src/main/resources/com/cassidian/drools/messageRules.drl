@@ -1,0 +1,61 @@
+package com.cassidian.drools;
+
+import com.cassidian.drools.model.Message
+import com.cassidian.drools.model.Action
+
+dialect "mvel"
+
+/* 4 simple rules to achieve the results we're trying to replicate based on the XML example...
+
+   The main things I'm conveying here is basic rule structure and that you can run any sort
+   of java code that you wish from the consequence. While I've (lazily) just built an Action
+   object that will println the recipient and message header id, the sky's the limit to what you
+   are able to do with the message object that we've passed through to the consequence. Note
+   that I've globally set the dialect to mvel above, so all conditions (aka "when", aka "LHS"
+   aka "left-hand side") of your rules will use mvel, while the consequences (aka "then", aka "RHS")
+   will use JAVA code. */
+
+/* I've also included an XML representation of rules (sameRulesAsXml.xml), just to show that DRL files
+   are not the only acceptable form of input. This could allow a little more flexibility, depending on
+   what is building the rule file for your system, so I felt that it should be included for completeness. */
+
+
+// voice present, withALI == true, withData == true
+rule "Voice, ALI, Data present"
+when
+    $message : Message ( data.type == "voice", data.withALI, data.withData )
+then
+    Action action = new Action($message);
+    action.tell("CIS");
+    retract($message)
+end
+
+// voice present, withALI == true, withData == false
+rule "Voice, ALI, no Data present"
+when
+    $message : Message ( data.type == "voice", data.withALI, !data.withData )
+then
+    Action action = new Action($message);
+    action.tell(new String[]{"Me", "You", "Rowdy"});
+    retract($message)
+end
+
+// voice present, withALI == false, withData == true
+rule "Voice, no ALI, withData"
+when
+    $message : Message ( data.type == "voice", !data.withALI, data.withData )
+then
+    Action action = new Action($message);
+    action.tell("CAD");
+    retract($message)
+end
+
+// voice present, withALI == false, withData == false
+rule "Voice, no ALI, no data"
+when
+    $message : Message ( data.type == "voice", !data.withALI, !data.withData )
+then
+    Action action = new Action($message);
+    action.tell("Reporter");
+    retract($message)
+end
