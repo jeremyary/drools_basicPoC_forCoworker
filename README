@@ -1,1 +1,7 @@
-This file was created by IntelliJ IDEA 11.0.1 for binding GitHub repository
+Covers basic usage of drools rule engine including how to stand up and run the engine, basic rule sytax, and how to test against working memory and the agenda.
+
+I recommend starting with a look at messageRules.drl and MessageRulesTest.java as I've documented via comment the intentions of
+the project and each test/component of the rule engine.
+
+If there's anything you'd like to see further demonstrated, please let me know.
+
